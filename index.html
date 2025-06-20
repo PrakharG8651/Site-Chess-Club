@@ -1,27 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My GSAP Site</title>
-    <style>
-      body {
-        margin: 0;
-        background: #111;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-      .box {
-        width: 100px;
-        height: 100px;
-        background: red;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="box"></div>
-    <script type="module" src="src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chessiitk</title>
+  <link rel="stylesheet" href="/src/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Loader Section -->
+  <div id="loader">
+    <object id="pawn-svg" type="image/svg+xml" data="/pawn.svg"></object>
+    <div id="progress-bar">
+      <div id="bar"></div>
+    </div>
+  </div>
+
+  <!-- Main Site Content -->
+  <div id="site-content">
+
+   
+    <header>
+      <div class="logo-wrapper" id="logoWrapper">
+        <span class="dot">.</span>
+        <span class="char" id="cChar"><span class="letter">c</span><img class="icon" src="assets/champion.png" alt="Champion"></span>
+
+        <span class="char" id="hChar"><span class="letter">h</span><img class="icon" src="assets/night.png" alt="Knight"></span>
+
+        <!-- e with bolt icon -->
+        <span class="char" id="eChar"><span class="letter">e</span><img class="icon" src="assets/bolt.png" alt="Bolt"></span>
+
+        <!-- both s replaced by clock -->
+        <span class="char" id="sChar1"><span class="letter">ss</span><img class="icon clock" src="assets/sclock.jpg" alt="Clock"></span>
+
+        <!-- iitk part: each replaced by logo when hovered -->
+        <span class="char iitk"><span class="letter">iitk</span></span>
+      </div>
+    </header>
+
+
+    <main>
+      <div class="box gradient-green"></div>
+      <div class="box gradient-red"></div>
+      <div class="box gradient-orange"></div>
+      <div class="box gradient-blue"></div>
+      <div style="height: 2000px;">Scroll down...</div>
+    </main>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>

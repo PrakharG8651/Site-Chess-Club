@@ -12,6 +12,8 @@
     "vite": "^6.3.5"
   },
   "dependencies": {
-    "gsap": "^3.13.0"
+    "@google/model-viewer": "^4.1.0",
+    "gsap": "^3.13.0",
+    "three-stdlib": "^2.36.0"
   }
 }
