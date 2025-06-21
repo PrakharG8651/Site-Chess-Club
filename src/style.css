@@ -3,16 +3,21 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #111;
+  background: #0E100F;
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
+}
+
+body, #site-content {
+  padding: 0;
+  margin: 0;
 }
 
 /* Loader styles */
 #loader {
   position: fixed;
   inset: 0;
-  background: #111;
+  background: #0E100F;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,22 +48,6 @@ html, body {
   transition: width 0.3s ease;
 }
 
-/* Site content */
-#site-content {
-  display: none;
-  opacity: 0;
-  color: #ffffff;
-  transition: opacity 0.8s ease;
-  padding: 2rem;
-}
-
-.site-header {
-  background: #222;
-  color: #fff;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.2rem;
-}
 
 .box {
   width: 100px;
@@ -66,96 +55,110 @@ html, body {
   margin: 1rem;
 }
 
-
-header {
-  background-color: black;
-  padding: 10px 20px;
-}
-
 .logo-wrapper {
   font-family: 'Poppins', sans-serif;
   font-size: 30px;
   font-style: italic;
   font-weight: 700;
-  color: greenyellow;
-  display: flex;
-  align-items: center;
+  background-color: transparent;
+  display: flex;              /* changed from inline-block to flex */
+  align-items: center;        /* vertical alignment */
   position: relative;
   gap: 1px;
+  border-radius: 40px;
+  padding-left: 10px;
+  margin-left: 0px;
+  margin-bottom: 0;
+  height: 100px;               /* Set a fixed height */
+  line-height: 100px;          /* Vertically center text */
 }
 
-.char {
+/* Green text on black background class */
+.green-on-black {
+  color: #00ff88;
+}
+
+/* Header styling */
+header {
+  background: #0E100F; /* Match body background */
+  padding: 18px 32px 36px 32px;
+  border-radius: 0 0 48px 48px;
+  box-shadow: 0 12px 32px 0 rgba(0,0,0,0.45), 0 8px 0 0 #181a1b;
   position: relative;
-  display: inline-block;
-  cursor: pointer;
+  z-index: 10;
+  margin-bottom: 2rem;
 }
 
-.char .icon {
+/* Add this for the boundary effect */
+header::after {
+  content: "";
+  display: block;
   position: absolute;
-  height: 70px;
-  width: auto;
-  top: 0;
   left: 0;
-  color: red;
-  opacity: 0;
-  transition: all 0.3s ease;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 0 0 16px 16px;
+  background: linear-gradient(90deg, #39ff14 0%, #00ff88 100%);
+  opacity: 0.7;
+  z-index: 11;
 }
 
-.clock{
-  position: absolute;
-  top: 0;
-  left: 0;
+.header-inner {
+  display: flex;
+  align-items: center;    /* Vertically center children */
+  justify-content: space-between;
   width: 100%;
-  height: 100%;
-  background-color: transparent;
+  max-width: none;
+  margin: 0;
+  padding-left: 5px;
+  padding-right: 32px;
+  min-height: 100px;   /* Ensure header matches logo height */
 }
 
-.char .letter {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  display: inline-block;
+/* Navigation tabs */
+.header-nav {
+  display: flex;
+  gap: 3rem;
+  margin-top: 0;
+  width: auto;
 }
 
-.char:hover .letter {
-  transform: translateY(-10px);
-  opacity: 0;
+.nav-tab {
+  color: #00ff88;
+  text-decoration: none;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 8px 18px;
+  border-radius: 24px;
+  transition: background 0.2s, color 0.2s;
+  height: 100px;               /* Match logo-wrapper height */
+  line-height: 100px;          /* Vertically center text */
+  display: flex;
+  align-items: center;
 }
 
-.char:hover .icon {
-  opacity: 1;
+/* Style for logo image tab */
+.logo-tab {
+  display: flex;
+  align-items: center;
+  height: 100px;      /* Match logo image height */
+  width: 100px;
+  padding: 0 10px;
+  background: none;
 }
 
-.clock {
-  color: #fdf6d8;
-  left: 12px;
+.nav-logo-img {
+  height: 100px;      /* Set logo image size */
+  width: 100px;
+  object-fit: contain;
+  border-radius: 16px;
+  display: block;
 }
 
-.knight {
-  color: #fdf6d8;
+.nav-logo-img:hover {
+  transform: scale(1.1);
+  transition: transform 0.2s ease-in-out;
 }
 
-.bolt {
-  color: yellow;
-}
-
-.timer {
-  color: red;
-  font-size: 20px;
-  font-family: 'Courier New', monospace;
-}
-
-.char.iitk .icon.logo.icon-2 {
-  background-image: url('your-logo.png'); /* Replace with actual logo path */
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 50px;
-  height: 28px;
-  opacity: 0;
-}
-
-.char.iitk:hover .letter {
-  opacity: 0;
-}
-
-.char.iitk:hover .icon.logo {
-  opacity: 1;
-}
