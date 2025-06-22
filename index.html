@@ -52,7 +52,18 @@
           src="/models/alphanight.glb" 
           alt="3D Robot Model" 
           camera-controls 
-          auto-rotate 
+          auto-rotate
+          rotation-per-second=".05deg"
+          interaction-prompt="none"
+          disable-zoom
+          disable-pan
+          camera-orbit="0deg 70deg 4.3m" 
+          min-camera-orbit="0deg 70deg 1.0m"
+          max-camera-orbit="360deg 90deg 10.0m"
+          camera-target="0m 0.6m 0m"
+          shadow-intensity="1.5"
+          environment-image="neutral"
+          exposure="1.2"
           class="robot-model">
         </model-viewer>
     </main>
