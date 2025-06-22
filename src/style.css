@@ -3,7 +3,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  background: #0E100F;
+  background: #01519220;
   font-family: 'Poppins', sans-serif;
   overflow: hidden;
 }
@@ -80,7 +80,7 @@ body, #site-content {
 
 /* Header styling */
 header {
-  background: #0E100F; /* Match body background */
+  background: #0D0907; /* Match body background */
   padding: 18px 32px 36px 32px;
   border-radius: 0 0 48px 48px;
   box-shadow: 0 12px 32px 0 rgba(0,0,0,0.45), 0 8px 0 0 #181a1b;
@@ -160,5 +160,74 @@ header::after {
 .nav-logo-img:hover {
   transform: scale(1.1);
   transition: transform 0.2s ease-in-out;
+}
+
+.animated-logo {
+  display: flex;
+  align-items: flex-end;
+  width: 260px;
+  height: 40px;
+  justify-content: flex-start;
+  font-family: 'Lilita One', 'Poppins', sans-serif;
+  font-size: 2rem;
+  color: #00ff99;
+  letter-spacing: 2px;
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.logo-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #00ff99;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 0 8px #00ff99aa;
+  transition: background 0.2s;
+  will-change: transform;
+}
+.logo-letter {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.chessiitk-logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.2rem;
+  font-style: italic;
+  font-weight: 700;
+  color: #43a047;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 0;
+}
+
+/* If you want hover effect */
+.chessiitk-logo:hover {
+  text-shadow: 0 0 10px rgba(67, 160, 71, 0.5);
+  transition: all 0.3s ease;
+}
+
+/* Add this to your style.css file */
+.robot-model {
+  width: 50%;
+  height: 500px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+main {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
 }
 

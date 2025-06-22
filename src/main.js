@@ -1,6 +1,72 @@
-import { gsap } from "gsap";
+window.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM Content Loaded");
+});
 
 window.addEventListener("load", () => {
+  console.log("Window fully loaded");
+
+  // Wait a bit extra to ensure everything is ready
+  setTimeout(() => {
+    // Test if DrawSVG works with a simple animation
+    const testPath = document.querySelector("#c-path");
+    if (testPath) {
+      console.log("Found test path, attempting animation");
+      gsap.set(testPath, { drawSVG: "0%" });
+      gsap.to(testPath, {
+        drawSVG: "100%",
+        duration: 2,
+        onStart: () => console.log("Test animation started"),
+        onComplete: () => {
+          console.log("Test animation complete, starting full animation");
+          startFullAnimation();
+        }
+      });
+    } else {
+      console.error("Test path not found");
+    }
+  }, 2000);
+
+  function startFullAnimation() {
+    console.log("Starting full animation sequence");
+
+    // Create timeline
+    const tl = gsap.timeline();
+
+    // Hide all paths initially
+    const paths = [
+      "#c-path", "#h-path", "#e-path", "#s1-path", "#s2-path",
+      "#i1-path", "#i2-path", "#t-path", "#k-path"
+    ];
+
+    gsap.set(paths, { drawSVG: "0%" });
+    gsap.set("#i1-dot, #i2-dot", { autoAlpha: 0 });
+
+    // Animate dot first
+    tl.fromTo("#dot",
+      { scale: 0, transformOrigin: "center" },
+      { scale: 1, duration: 0.5, ease: "back.out(1.5)" }
+    );
+
+    // Animate each path
+    paths.forEach(path => {
+      tl.to(path, {
+        drawSVG: "100%",
+        duration: 0.6,
+        ease: "power2.inOut"
+      }, "-=0.3");
+
+      if (path === "#i1-path") {
+        tl.to("#i1-dot", { autoAlpha: 1, duration: 0.3 }, "-=0.2");
+      }
+
+      if (path === "#i2-path") {
+        tl.to("#i2-dot", { autoAlpha: 1, duration: 0.3 }, "-=0.2");
+      }
+    });
+
+    console.log("Animation setup complete");
+  }
+
   const svgObject = document.getElementById("pawn-svg");
   const progressBar = document.getElementById("bar");
   const loader = document.getElementById("loader");
@@ -85,4 +151,289 @@ window.addEventListener("DOMContentLoaded", () => {
     icon.classList.add("icon", "logo");
     char.appendChild(icon);
   });
+});
+
+// Animated logo dot effect for "chessiitK"
+window.addEventListener("DOMContentLoaded", () => {
+  const logo = document.getElementById("animated-logo");
+  const circle = document.getElementById("circle");
+  const letters = Array.from(document.querySelectorAll(".logo-letter"));
+
+  if (!logo || !circle || letters.length === 0) return;
+
+  let currentIdx = 0; // 0 = before first letter, 1 = before second, etc.
+
+  // Helper: move the circle before the letter at idx, and shift the letter to make space
+  function moveCircleTo(idx, pop = true) {
+    const rectLogo = logo.getBoundingClientRect();
+    let target;
+    let left, top;
+    // Reset all letter shifts
+    letters.forEach((letter, i) => {
+      gsap.to(letter, { x: 0, duration: 0.25, ease: "power2.out" });
+      gsap.to(letter, { zIndex: 1, duration: 0.01 });
+    });
+
+    // Default: dot is slightly below the baseline
+    let circleY = 18; // px down (adjust for your font size)
+    let circleZ = 2;
+
+    if (idx === 0) {
+      target = letters[0];
+      const rectTarget = target.getBoundingClientRect();
+      left = rectTarget.left - rectLogo.left - circle.offsetWidth / 2 - 2;
+    } else {
+      target = letters[idx - 1];
+      const rectTarget = target.getBoundingClientRect();
+      left = rectTarget.right - rectLogo.left - circle.offsetWidth / 2 + 2;
+      // Shift the letter to the left to make space for the dot
+      gsap.to(target, {
+        x: -circle.offsetWidth - 8, // 8px gap, adjust as needed
+        duration: 0.25,
+        ease: "power2.out",
+        zIndex: 1
+      });
+      // When dot is popping up, animate Y from below to baseline
+      if (pop) {
+        circleY = 0;
+        circleZ = 3;
+      }
+    }
+
+    // Animate the circle
+    gsap.to(circle, {
+      x: left,
+      y: circleY,
+      zIndex: circleZ,
+      duration: 0.32,
+      ease: pop ? "back.out(1.7)" : "power2.inOut"
+    });
+    currentIdx = idx;
+  }
+
+  // Initial position (dot below the first letter)
+  gsap.set(circle, { y: 18, zIndex: 2 });
+  moveCircleTo(0, false);
+
+  // Add hover listeners to each letter
+  letters.forEach((letter, idx) => {
+    letter.addEventListener("mouseenter", () => {
+      moveCircleTo(idx + 1, true);
+    });
+    letter.addEventListener("mousemove", () => {
+      moveCircleTo(idx + 1, true);
+    });
+  });
+
+  // When mouse enters the logo area but not on a letter, reset to 0
+  logo.addEventListener("mouseenter", (e) => {
+    if (!e.target.classList.contains("logo-letter")) {
+      moveCircleTo(0, true);
+    }
+  });
+
+  // When mouse leaves the logo, animate back step-by-step to 0, popping down
+  logo.addEventListener("mouseleave", () => {
+    function stepBack(idx) {
+      if (idx <= 0) {
+        // Animate dot down below baseline at the end
+        gsap.to(circle, { y: 18, duration: 0.32, ease: "power2.in" });
+        return;
+      }
+      moveCircleTo(idx - 1, false);
+      setTimeout(() => stepBack(idx - 1), 60);
+    }
+    stepBack(currentIdx);
+  });
+});
+
+// Ensure this runs after page fully loads with images and everything
+window.addEventListener("load", () => {
+  console.log("Starting logo animation...");
+
+  // Make sure GSAP plugins are registered
+  if (typeof gsap === "undefined") {
+    console.error("GSAP not loaded!");
+    return;
+  }
+
+  if (!gsap.getProperty || !gsap.getProperty("div", "x")) {
+    console.warn("GSAP not fully initialized yet, delaying...");
+    setTimeout(initAnimation, 500);
+  } else {
+    initAnimation();
+  }
+
+  function initAnimation() {
+    // Debug checks
+    const allPathsExist = [
+      "#dot", "#c-path", "#h-path", "#e-path", "#s1-path", "#s2-path",
+      "#i1-path", "#i1-dot", "#i2-path", "#i2-dot", "#t-path", "#k-path"
+    ].every(sel => {
+      const el = document.querySelector(sel);
+      if (!el) console.error(`Element ${sel} not found!`);
+      return !!el;
+    });
+
+    if (!allPathsExist) {
+      console.error("Some SVG paths are missing!");
+      return;
+    }
+
+    const paths = [
+      "#c-path", "#h-path", "#e-path", "#s1-path", "#s2-path",
+      "#i1-path", "#i2-path", "#t-path", "#k-path"
+    ];
+
+    // Set initial state (invisible)
+    gsap.set(paths, { drawSVG: "0% 0%" });
+    gsap.set("#dot", { scale: 0, transformOrigin: "50% 50%" });
+    gsap.set("#i1-dot", { autoAlpha: 0 });
+    gsap.set("#i2-dot", { autoAlpha: 0 });
+
+    // Create a timeline for sequenced animation
+    const tl = gsap.timeline();
+
+    // Animate dot first
+    tl.to("#dot", {
+      scale: 1,
+      duration: 0.6,
+      ease: "back.out(1.7)"
+    });
+
+    // Animate each letter path in sequence
+    paths.forEach((selector, i) => {
+      tl.to(selector, {
+        drawSVG: "0% 100%",
+        duration: 0.7,
+        ease: "power1.inOut"
+      }, "-=0.4"); // More overlap for smoother flow
+
+      // Fade in i-dots after their stems
+      if (selector === "#i1-path") {
+        tl.to("#i1-dot", {
+          autoAlpha: 1,
+          duration: 0.3
+        }, "-=0.3");
+      }
+      if (selector === "#i2-path") {
+        tl.to("#i2-dot", {
+          autoAlpha: 1,
+          duration: 0.3
+        }, "-=0.3");
+      }
+    });
+
+    // Debug check - wait 1s for anything that might not be fully initialized
+    setTimeout(() => {
+      console.log("Starting the actual animation now...");
+
+      // Reset all to visible first (for testing)
+      gsap.set("#dot", { scale: 1, opacity: 1 });
+      gsap.set("#i1-dot, #i2-dot", { opacity: 1 });
+
+      // Animate just ONE path to test DrawSVGPlugin
+      gsap.fromTo("#c-path",
+        { drawSVG: "0%" },
+        { drawSVG: "100%", duration: 2 }
+      );
+
+      console.log("Animation started!");
+    }, 1000);
+  }
+});
+
+// Remove these imports at the top
+// import { gsap } from "gsap";
+// import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
+
+// Instead, add this after waiting for the script to load
+window.addEventListener("load", () => {
+  // Make sure the global version is being used
+  if (window.gsap && window.DrawSVGPlugin) {
+    gsap.registerPlugin(DrawSVGPlugin);
+    console.log("DrawSVGPlugin registered from globals");
+    
+    // Wait for everything to be truly ready
+    setTimeout(initAnimation, 2000);
+  } else {
+    console.error("Global GSAP or DrawSVGPlugin not available");
+  }
+  
+  function initAnimation() {
+    // Simplified animation just to test
+    console.log("Starting simple test animation");
+    
+    // Make dot visible immediately (for testing)
+    gsap.set("#dot", { scale: 1 });
+    
+    // Test a single path
+    const cPath = document.querySelector("#c-path");
+    if (cPath) {
+      // Make sure DrawSVG is being called correctly
+      gsap.set(cPath, { drawSVG: "0%" });
+      gsap.to(cPath, {
+        drawSVG: "100%",
+        duration: 2,
+        delay: 0.5,
+        onStart: () => console.log("Path animation started"),
+        onComplete: () => console.log("Path animation complete")
+      });
+    }
+  }
+});
+
+window.addEventListener("load", () => {
+  setTimeout(() => {
+    console.log("Starting alternative animation approach");
+    
+    // First hide all paths
+    const paths = document.querySelectorAll("#chessiitk-svg path");
+    const dots = [document.querySelector("#dot"), document.querySelector("#i1-dot"), document.querySelector("#i2-dot")];
+    
+    // Hide paths initially using stroke-dasharray/dashoffset technique
+    paths.forEach(path => {
+      if (path) {
+        const length = path.getTotalLength ? path.getTotalLength() : 100;
+        gsap.set(path, { 
+          strokeDasharray: length,
+          strokeDashoffset: length,
+          opacity: 1
+        });
+      }
+    });
+    
+    // Hide dots initially
+    gsap.set(dots, { scale: 0, transformOrigin: "center" });
+    
+    // Create animation timeline
+    const tl = gsap.timeline();
+    
+    // Animate the main dot first
+    tl.to("#dot", { scale: 1, duration: 0.5, ease: "back.out(1.7)" });
+    
+    // Animate each letter path
+    const pathIds = ["#c-path", "#h-path", "#e-path", "#s1-path", "#s2-path", 
+                     "#i1-path", "#i2-path", "#t-path", "#k-path"];
+    
+    pathIds.forEach((id, index) => {
+      const path = document.querySelector(id);
+      if (path) {
+        tl.to(path, { 
+          strokeDashoffset: 0, 
+          duration: 0.6,
+          ease: "power1.inOut" 
+        }, "-=0.3");
+        
+        // Add the i-dots after their stems
+        if (id === "#i1-path") {
+          tl.to("#i1-dot", { scale: 1, duration: 0.3 }, "-=0.2");
+        }
+        if (id === "#i2-path") {
+          tl.to("#i2-dot", { scale: 1, duration: 0.3 }, "-=0.2");
+        }
+      }
+    });
+    
+  }, 2000); // 2 second delay
 });
