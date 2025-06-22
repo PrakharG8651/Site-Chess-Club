@@ -437,3 +437,55 @@ window.addEventListener("load", () => {
     
   }, 2000); // 2 second delay
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Get the model viewer element
+  const modelViewer = document.querySelector('.robot-model');
+  
+  // Make sure the model is loaded before attempting to manipulate it
+  modelViewer.addEventListener('load', () => {
+    // Add mouse move event listener to the document
+    document.addEventListener('mousemove', (event) => {
+      // Get the mouse position
+      var mouseX = event.clientX;
+      const rangeDecider= [280,960,1245,1600];
+      const values=[280,560,808,1600];
+      if(mouseX<rangeDecider[0]){
+        mouseX=values[0];
+      }
+      else if(mouseX<=rangeDecider[1]){
+        mouseX=(values[1]-values[0])*(mouseX-rangeDecider[0])/(rangeDecider[1]-rangeDecider[0])+values[0];
+      }
+      else if(mouseX<=rangeDecider[2]){
+        mouseX=(values[2]-values[1])*(mouseX-rangeDecider[1])/(rangeDecider[2]-rangeDecider[1])+values[1];
+      }
+      else if(mouseX<=rangeDecider[3]){
+        mouseX=(values[3]-values[2])*(mouseX-rangeDecider[2])/(rangeDecider[3]-rangeDecider[2])+values[2];
+      }
+      // Get the viewport width
+      var viewportWidth = window.innerWidth;
+
+      // Calculate the normalized position (-1 to 1)
+      var normalizedX = (mouseX / viewportWidth) * 2 - 1;
+
+      // Calculate the rotation angle (in degrees)
+      // Map from -1...1 to -45...45 degrees of rotation
+      const rotationAngle = normalizedX * -120; // 120 deg range of motion
+
+      // Apply the rotation to the model by changing the camera orbit
+      const currentOrbit = modelViewer.getAttribute('camera-orbit').split(' ');
+      currentOrbit[0] = `${rotationAngle}deg`;
+      
+      // Update the camera orbit with the new rotation angle
+      modelViewer.setAttribute('camera-orbit', currentOrbit.join(' '));
+    });
+  });
+  
+  // Add a small delay to ensure the model is fully loaded
+  setTimeout(() => {
+    // Set initial camera orbit
+    const initialOrbit = modelViewer.getAttribute('camera-orbit').split(' ');
+    initialOrbit[0] = "0deg"; // Reset horizontal rotation
+    modelViewer.setAttribute('camera-orbit', initialOrbit.join(' '));
+  }, 1000);
+});
