@@ -1,13 +1,106 @@
 /* Reset and layout */
 
-.content{
+.alpha{
+  color: #fae588;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.2rem;
+}
+
+.content {
   display: flex;
   flex-direction: column;
-  align-items: left;
+  align-items: flex-start;
   margin-top: 10px;
-  margin-left: 10px;
-  padding-left: 20px;
+  color: whitesmoke;
+  padding-left: 10px; /* Reduced left padding */
+  width: 60%; /* Set width to take up less space and avoid robot overlap */
 }
+
+/* Content styling */
+.content-inner {
+  max-width: 800px;
+  margin: 0;  /* Changed from "margin: 0 auto" to remove centering */
+  padding-left: 40px; /* Add some padding inside for quote and text */
+}
+
+.main-title {
+  color: #fae588;
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  position: relative;
+  padding-left: 0; /* Remove any left padding */
+}
+
+.quote-container {
+  margin: 20px 0 30px;
+  border-left: 4px solid #00ff88;
+  padding-left: 15px; /* Add padding for the quote text */
+  width: 100%; /* Make sure it takes full width of parent */
+}
+
+.chess-quote {
+  font-style: italic;
+  color: #fcefb4;
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.main-description {
+  color: #ccc;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+  width: 100%; /* Ensure full width */
+  padding-right: 10px; /* Add some padding on right */
+}
+
+
+/* Robot speech bubble */
+
+.speech-bubble {
+  position: fixed;
+  right:0%;
+  top: 150px;
+  background:transparent;
+  border: 2px solid gold;
+  color: white;
+  padding: 20px;
+  border-radius: 20px;
+  max-width: 300px;
+  box-shadow: 0 0 15px #FBECCB;
+  z-index: 30;
+  font-family: 'Poppins', sans-serif;
+  opacity: 0;
+  transform: translateY(-20px) scale(0.9);
+  transition: all 0.5s ease-out;
+  pointer-events: none;
+}
+
+.speech-bubble p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.speech-bubble-arrow {
+  position: absolute;
+  bottom: -20px;
+  left: 40px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid gold;
+}
+
+.speech-bubble.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 
 html, body {
   margin: 0;
@@ -54,39 +147,10 @@ body, #site-content {
 #bar {
   height: 100%;
   width: 0%;
-  background-color: #00ff88;
+  background-color: #fcefb4;
   transition: width 0.3s ease;
 }
 
-
-.box {
-  width: 100px;
-  height: 100px;
-  margin: 1rem;
-}
-
-.logo-wrapper {
-  font-family: 'Poppins', sans-serif;
-  font-size: 30px;
-  font-style: italic;
-  font-weight: 700;
-  background-color: transparent;
-  display: flex;              /* changed from inline-block to flex */
-  align-items: center;        /* vertical alignment */
-  position: relative;
-  gap: 1px;
-  border-radius: 40px;
-  padding-left: 10px;
-  margin-left: 0px;
-  margin-bottom: 0;
-  height: 100px;               /* Set a fixed height */
-  line-height: 100px;          /* Vertically center text */
-}
-
-/* Green text on black background class */
-.green-on-black {
-  color: #00ff88;
-}
 
 /* Header styling */
 header {
@@ -95,7 +159,7 @@ header {
   border-radius: 0 0 48px 48px;
   box-shadow: 0 12px 32px 0 rgba(0,0,0,0.45), 0 8px 0 0 #181a1b;
   position: relative;
-  z-index: 10;
+  z-index: 20;  /* Increased z-index */
   padding-bottom: 0px;
 }
 
@@ -109,7 +173,7 @@ header::after {
   bottom: -1px;
   height: 2px;
   border-radius: 0 0 16px 16px;
-  background: linear-gradient(90deg, #39ff14 0%, #00ff88 100%);
+  background: linear-gradient(90deg, #FBECCB 0%, gold 100%);
   opacity: 0.7;
   z-index: 11;
 }
@@ -135,7 +199,7 @@ header::after {
 }
 
 .nav-tab {
-  color: #00ff88;
+  color: #FBECCB;
   text-decoration: none;
   font-size: 1.15rem;
   font-weight: 600;
@@ -172,46 +236,13 @@ header::after {
   transition: transform 0.2s ease-in-out;
 }
 
-.animated-logo {
-  display: flex;
-  align-items: flex-end;
-  width: 260px;
-  height: 40px;
-  justify-content: flex-start;
-  font-family: 'Lilita One', 'Poppins', sans-serif;
-  font-size: 2rem;
-  color: #00ff99;
-  letter-spacing: 2px;
-  -webkit-user-select: none;
-  user-select: none;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.logo-circle {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #00ff99;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 0 8px #00ff99aa;
-  transition: background 0.2s;
-  will-change: transform;
-}
-.logo-letter {
-  display: inline-block;
-  position: relative;
-  z-index: 1;
-  transition: color 0.2s;
-}
 
 .chessiitk-logo {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Oswald', sans-serif;
   font-size: 2.2rem;
   font-style: italic;
-  font-weight: 700;
-  color: #43a047;
+  font-weight: 1000;
+  color: #f9dc5c;
   letter-spacing: 1px;
   cursor: pointer;
   display: inline-block;
@@ -226,37 +257,50 @@ header::after {
 
 /* Add this to your style.css file */
 .robot-model {
-  position: fixed;  /* Keep fixed positioning */
+  position: fixed;
   right: 0;
-  top: -500px;  /* Changed from 120px to 100px to move it higher up */
+  top: -400px;  /* Changed from -500px to -400px to show more of the head */
   width: 30%; 
   height: 110vh;
-  transform: scale(1.5);
+  transform: scale(1.4);  /* Slightly reduced from 1.5 to fit better */
   transform-origin: top right;
   --poster-color: transparent;
   background-color: transparent;
-  
-  /* Shadow styling */
-  --shadow-color: #ffffff;
-  --shadow-opacity: 1;
-  --shadow-intensity: 1;
-  
-  /* Make absolutely sure there are no margins or padding affecting position */
+  border: none !important;
+  outline: none !important;
+  --min-camera-orbit: "auto auto auto";
+  --max-camera-orbit: "auto auto auto";
+  --model-border-width: 0;
+  --progress-bar-color: transparent;
+  --progress-bar-height: 0;
+  --progress-mask: transparent;
   margin: 0;
   padding: 0;
-
-  /* Add z-index to ensure it's above other content */
-  z-index: 100;
+  z-index: 5;  /* Keep lower z-index so it's below the header */
+  pointer-events: none;  /* Keep this to ensure navigation works */
 }
 
-/* Make sure the main container doesn't interfere with positioning */
-main {
+/* Create a separate hit area for the model that doesn't overlap with the header */
+.robot-model::after {
+  content: "";
+  position: absolute;
+  top: 600px;  /* Start below the header area */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: auto;  /* Re-enable pointer events only for this area */
+}
+
+
+.header-inner, .header-nav, .nav-tab {
   position: relative;
-  overflow: visible;
+  z-index: 25;  /* Even higher z-index */
 }
 
-/* Clear any other conflicting styles */
-#site-content {
-  overflow: visible;
+/* Add this to ensure camera controls work */
+model-viewer::part(default-progress-bar),
+model-viewer::part(default-ar-button),
+model-viewer::part(default-ar-prompt) {
+  pointer-events: auto;
 }
 

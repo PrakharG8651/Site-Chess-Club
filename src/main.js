@@ -154,7 +154,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 // Animated logo dot effect for "chessiitK"
-window.addEventListener("DOMContentLoaded", () => {
+/*window.addEventListener("DOMContentLoaded", () => {
   const logo = document.getElementById("animated-logo");
   const circle = document.getElementById("circle");
   const letters = Array.from(document.querySelectorAll(".logo-letter"));
@@ -245,10 +245,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     stepBack(currentIdx);
   });
-});
+});*/
 
 // Ensure this runs after page fully loads with images and everything
-window.addEventListener("load", () => {
+/*window.addEventListener("load", () => {
   console.log("Starting logo animation...");
 
   // Make sure GSAP plugins are registered
@@ -341,13 +341,14 @@ window.addEventListener("load", () => {
       console.log("Animation started!");
     }, 1000);
   }
-});
+});*/
 
 // Remove these imports at the top
 // import { gsap } from "gsap";
 // import { DrawSVGPlugin } from "gsap/DrawSVGPlugin";
 
 // Instead, add this after waiting for the script to load
+/*
 window.addEventListener("load", () => {
   // Make sure the global version is being used
   if (window.gsap && window.DrawSVGPlugin) {
@@ -381,7 +382,7 @@ window.addEventListener("load", () => {
       });
     }
   }
-});
+});*/
 
 window.addEventListener("load", () => {
   setTimeout(() => {
@@ -488,4 +489,65 @@ document.addEventListener('DOMContentLoaded', () => {
     initialOrbit[0] = "0deg"; // Reset horizontal rotation
     modelViewer.setAttribute('camera-orbit', initialOrbit.join(' '));
   }, 1000);
+});
+
+// Speech bubble behavior - only show on first load and when clicked
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the speech bubble and model elements
+  const speechBubble = document.getElementById('robot-speech');
+  const modelViewer = document.querySelector('.robot-model');
+  
+  // Show the speech bubble when the page loads
+  setTimeout(() => {
+    speechBubble.classList.add('visible');
+    
+    // Hide the speech bubble after 5 seconds
+    setTimeout(() => {
+      speechBubble.classList.remove('visible');
+    }, 5000);
+  }, 1500); // Show after 1.5 seconds
+  
+  // Make the hit area for the robot clickable
+  const robotHitArea = document.createElement('div');
+  robotHitArea.className = 'robot-hit-area';
+  robotHitArea.style.cssText = `
+    position: fixed;
+    right: 0;
+    top: 150px;
+    width: 300px;
+    height: 500px;
+    background-color: transparent;
+    z-index: 15;
+    cursor: pointer;
+  `;
+  document.body.appendChild(robotHitArea);
+  
+  // Make the bubble reappear when clicking the robot
+  robotHitArea.addEventListener('click', () => {
+    console.log('Robot clicked!'); // Debug log
+    // Only show if it's not already visible
+    if (!speechBubble.classList.contains('visible')) {
+      speechBubble.classList.add('visible');
+      
+      // Hide it again after 4 seconds
+      setTimeout(() => {
+        speechBubble.classList.remove('visible');
+      }, 4000);
+    }
+  });
+  
+  // Add direct click handler to the model viewer as a backup
+  modelViewer.addEventListener('click', (event) => {
+    console.log('Model viewer clicked!'); // Debug log
+    event.stopPropagation();
+    
+    if (!speechBubble.classList.contains('visible')) {
+      speechBubble.classList.add('visible');
+      
+      setTimeout(() => {
+        speechBubble.classList.remove('visible');
+      }, 4000);
+    }
+  });
 });
