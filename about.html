@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Timeline</title>
+  <style>
+    .timeline-container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 80px;
+      padding: 100px;
+      background: black;
+    }
+
+    .timeline-event {
+      position: relative;
+      scroll-snap-align: start;
+      width: 250px;
+      flex-shrink: 0;
+    }
+
+    .event-box {
+      background: #fae588;
+      border-radius: 10px;
+      padding: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, max-height 0.3s ease;
+      max-height: 100px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .event-box:hover {
+      max-height: 300px;
+      transform: scale(1.05);
+    }
+
+    .event-image {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .event-title {
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .event-description {
+      margin-top: 6px;
+      font-size: 14px;
+    }
+
+    .event-circle {
+      width: 60px;
+      height: 60px;
+      background: black;
+      border: 4px solid #00ff00;
+      border-radius: 50%;
+      color: #00ff00;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      margin: 10px auto;
+    }
+
+    .connector {
+      position: absolute;
+      width: 80px;
+      height: 40px;
+      border-top: 4px solid green;
+      border-right: 4px solid green;
+      border-top-right-radius: 80px;
+      transform: rotate(135deg);
+      top: 50%;
+      left: 100%;
+    }
+
+    .upward .event-circle {
+      order: -1;
+    }
+
+    .downward .event-box {
+      order: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="timeline-container" id="timeline"></div>
+
+  <script>
+    const events = [
+      { id: 1, title: "Summer Blitz", date: "18 Apr", description: "Quick matches in the summer heat!", image: "preview1.png" },
+      { id: 2, title: "Hall-wise Battle", date: "5 Mar", description: "Inter-hall arena fight!", image: "preview2.png" },
+      { id: 3, title: "Puzzle Night", date: "22 Feb", description: "Crack problems quickly!", image: "preview3.png" },
+      { id: 4, title: "Rapid Rumble", date: "15 Jan", description: "A rapid tournament", image: "preview4.png" },
+      { id: 5, title: "Opening Workshop", date: "5 Jan", description: "Learn openings!", image: "preview5.png" },
+      { id: 6, title: "Winter Blitz", date: "18 Dec", description: "Cold blitz madness!", image: "preview6.png" },
+      { id: 7, title: "Team Chess", date: "30 Nov", description: "Team-up event.", image: "preview7.png" },
+      { id: 8, title: "Bullet Arena", date: "15 Oct", description: "1-minute games!", image: "preview8.png" },
+      { id: 9, title: "Simul Showdown", date: "10 Sep", description: "1 v Many!", image: "preview9.png" },
+      { id: 10, title: "Blitz Bash", date: "5 Aug", description: "Speedy games!", image: "preview10.png" }
+    ];
+
+    const container = document.getElementById("timeline");
+
+    events.forEach((event, index) => {
+      const isEven = event.id % 2 === 0;
+      const wrapper = document.createElement("div");
+      wrapper.className = `timeline-event ${isEven ? "downward" : "upward"}`;
+
+      const circle = document.createElement("div");
+      circle.className = "event-circle";
+      const [day, month] = event.date.split(" ");
+      circle.innerHTML = `<div>${day}</div><div style="font-size:12px;">${month}</div>`;
+
+      const box = document.createElement("div");
+      box.className = "event-box";
+      box.innerHTML = `
+        <img src="${event.image}" alt="${event.title}" class="event-image" />
+        <div class="event-title">${event.title}</div>
+        <div class="event-description">${event.description}</div>
+      `;
+
+      // Append based on layout
+      wrapper.appendChild(isEven ? circle : box);
+      wrapper.appendChild(isEven ? box : circle);
+
+      // Skip connector for leftmost (latest)
+      if (index !== 0) {
+        const connector = document.createElement("div");
+        connector.className = "connector";
+        wrapper.appendChild(connector);
+      }
+
+      container.appendChild(wrapper);
+    });
+  </script>
+</body>
+</html>

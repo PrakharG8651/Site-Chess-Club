@@ -1,5 +1,172 @@
 /* Reset and layout */
 
+
+.timeline-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 120px;
+  padding: 100px;
+  background: black;
+}
+
+.timeline-event {
+  position: relative;
+  scroll-snap-align: start;
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-box {
+  background: black;
+  border: 3px solid gold;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, max-height 0.3s ease;
+  max-height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+}
+
+.event-box:hover {
+  max-height: 300px;
+  transform: scale(1.05);
+}
+
+.event-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.event-title {
+  font-weight: bold;
+  margin-top: 8px;
+  color: gold;
+}
+
+.event-description {
+  margin-top: 6px;
+  font-size: 14px;
+  color: white;
+}
+
+.event-circle {
+  width: 60px;
+  height: 60px;
+  background: black;
+  border: 4px solid #00ff00;
+  border-radius: 50%;
+  color: #00ff00;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.upward {
+  flex-direction: column-reverse;
+}
+
+svg {
+  position: absolute;
+  left: -90px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+.timeline-container {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 120px;
+  padding: 100px;
+  background: black;
+}
+
+.timeline-event {
+  position: relative;
+  scroll-snap-align: start;
+  width: 250px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.event-box {
+  background: black;
+  border: 3px solid gold;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease, max-height 0.3s ease;
+  max-height: 100px;
+  overflow: hidden;
+  cursor: pointer;
+  width: 100%;
+}
+
+.event-box:hover {
+  max-height: 300px;
+  transform: scale(1.05);
+}
+
+.event-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.event-title {
+  font-weight: bold;
+  margin-top: 8px;
+  color: gold;
+}
+
+.event-description {
+  margin-top: 6px;
+  font-size: 14px;
+  color: white;
+}
+
+.event-circle {
+  width: 60px;
+  height: 60px;
+  background: black;
+  border: 4px solid #00ff00;
+  border-radius: 50%;
+  color: #00ff00;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.upward {
+  flex-direction: column-reverse;
+}
+
+svg {
+  position: absolute;
+  left: -90px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
 .alpha{
   color: #fae588;
   font-family: 'Poppins', sans-serif;
@@ -303,4 +470,11 @@ model-viewer::part(default-ar-button),
 model-viewer::part(default-ar-prompt) {
   pointer-events: auto;
 }
+
+.hidden-on-load {
+  opacity: 0;
+  transform: translateY(30px); /* or whatever fits your animation */
+  transition: none;
+}
+
 
