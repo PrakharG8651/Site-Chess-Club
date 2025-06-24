@@ -2,126 +2,396 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Events - chessiitk</title>
-  <link rel="stylesheet" href="/src/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://codepen.io/GreenSock/pen/xxmzBrw/fcaef74061bb7a76e5263dfc076c363e.css">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #01519220;
+      font-family: 'Poppins', sans-serif;
+      overflow: hidden;
+    }
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/DrawSVGPlugin.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
-  <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@1,700&display=swap" rel="stylesheet">
+    body, #site-content {
+      padding: 0;
+      margin: 0;
+    }
+
+    header {
+      background: #0D0907;
+      padding: 18px 32px 36px 32px;
+      border-radius: 0 0 48px 48px;
+      box-shadow: 0 12px 32px 0 rgba(0,0,0,0.45), 0 8px 0 0 #181a1b;
+      position: relative;
+      z-index: 20;
+      padding-bottom: 0px;
+    }
+    header::after {
+      content: "";
+      display: block;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      border-radius: 0 0 16px 16px;
+      background: linear-gradient(90deg, #FBECCB 0%, gold 100%);
+      opacity: 0.7;
+      z-index: 11;
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+      padding-left: 5px;
+      padding-right: 32px;
+      min-height: 100px;
+    }
+    .header-nav {
+      display: flex;
+      gap: 3rem;
+      margin-top: 0;
+      width: auto;
+    }
+    .nav-tab {
+      color: #FBECCB;
+      text-decoration: none;
+      font-size: 1.15rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      padding: 8px 18px;
+      border-radius: 24px;
+      transition: background 0.2s, color 0.2s;
+      height: 100px;
+      line-height: 100px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-tab:hover{
+      text-decoration: underline;
+    }
+    .logo-tab {
+      display: flex;
+      align-items: center;
+      height: 100px;
+      width: 100px;
+      padding: 0 10px;
+      background: none;
+    }
+    .nav-logo-img {
+      height: 100px;
+      width: 100px;
+      object-fit: contain;
+      border-radius: 16px;
+      display: block;
+    }
+    .nav-logo-img:hover {
+      transform: scale(1.3);
+      transition: transform 0.2s ease-in-out;
+    }
+    .chessiitk-logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 2.2rem;
+      font-style: italic;
+      font-weight: 1000;
+      color: #f9dc5c;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: inline-block;
+      padding: 10px 0;
+    }
+
+    /* Timeline styles */
+    .timeline-scroll {
+      width: 100vw;
+      height: 100vh;
+      overflow-x: auto;
+      overflow-y: hidden;
+      background: #0D0907;
+      scroll-behavior: smooth;
+    }
+    .timeline-outer {
+      display: flex;
+      align-items: center;
+      position: relative;
+      min-width: 1600px;
+      height: 100vh;
+      padding: 0 60px;
+      background: #0D0907;
+    }
+    .timeline-event {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 300px;
+      flex: 0 0 300px;
+      margin: 0 0px;
+      z-index: 2;
+    }
+    .timeline-node {
+      width: 90px;
+      height: 90px;
+      border: 3px solid #7cff6c;
+      border-radius: 50%;
+      background: #444;
+      color: #7cff6c;
+      font-weight: bold;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 3;
+    }
+    .node-up{
+      transform: translateY(190px);
+    }
+    .node-down{
+      transform: translateY(-100px);
+    }
+    .timeline-box {
+      width: 200px;
+      height: 200px;
+      background: #002060;
+      border: 2px solid #7cff6c;
+      border-radius: 8px;
+      margin: 0;
+      z-index: 2;
+    }
+    .vertical-connector {
+      width: 0;
+      height: 120px;
+      border-left: 2px dashed #7cff6c;
+      margin: 0 auto;
+    }
+    .connector-up {
+      transform: translateY(0px);
+    }
+    .connector-down {
+      transform: translateY(-100px);
+    }
+    .timeline-event.up {
+      flex-direction: column;
+    }
+    .timeline-event.down {
+      flex-direction: column-reverse;
+    }
+    .timeline-arrow-img {
+      position: absolute;
+      left: -120px;
+      width: 220px;
+      height: 300px;
+      z-index: 1;
+      pointer-events: none;
+      top: 30px;
+    }
+    .timeline-event.down .timeline-arrow-img {
+      top: auto;
+      bottom: 30px;
+      transform: scaleY(-1);
+    }
+    .event-box {
+      width: 200px;
+      height: 150px;
+      background: #FFD166;
+      border-radius: 12px;
+      color: #222;
+      font-weight: bold;
+      box-shadow: 0 2px 12px #0004;
+      border: 2px solid #1aff5c;
+      padding: 18px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(.23,1.02,.64,1.09), box-shadow 0.25s;
+      cursor: pointer;
+      z-index: 4;
+    }
+    .event-box img {
+      width: 100%;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: 8px;
+    }
+    .event-box .event-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+    .event-box .event-preview {
+      font-size: 1em;
+      font-weight: 500;
+    }
+    .event-box .event-details {
+      display: none;
+      font-size: 0.98em;
+      margin-top: 8px;
+      color: #333;
+    }
+    .event-box.popout {
+      transform: scale(1.13) translateY(-10px);
+      box-shadow: 0 8px 32px #0008;
+      z-index: 10;
+    }
+    .event-box.popout .event-details {
+      display: block;
+    }
+    .event-box-up {
+      transform: translateY(-320px);
+    }
+    .event-box-down {
+      transform: translateY(-100px);
+    }
+    @media (max-width: 900px) {
+      .timeline-outer { min-width: 900px; }
+      .timeline-event { width: 140px; flex-basis: 140px; }
+      .timeline-node { width: 50px; height: 50px; font-size: 1rem; }
+      .event-box { width: 110px; min-height: 70px; font-size: 0.9rem; padding: 8px 4px; }
+      .vertical-connector { height: 30px; }
+    }
+  </style>
 </head>
 <body>
-  <!-- Main Site Content -->
-  <div id="site-content">
-    <header>
-      <div class="header-inner">
-        <div class="logo-wrapper" style="margin-left:8px;">
-          <span class="chessiitk-logo">
-            chessiitk.
-          </span>
-        </div>
-        <nav class="header-nav">
-          <a href="index.html" class="nav-tab">Home</a>
-          <a href="events.html" class="nav-tab active">Events</a>
-          <a href="team.html" class="nav-tab">Team</a>
-          <a href="about.html" class="nav-tab">About</a>
-          <a href="index.html" class="nav-tab logo-tab">
-            <img src="/logo.png" alt="Logo" class="nav-logo-img" />
-          </a>
-        </nav>
+<header >
+    <div class="header-inner">
+      <div class="logo-wrapper" style="margin-left:8px;">
+        <span class="chessiitk-logo">
+          chessiitk.
+        </span>
       </div>
-    </header>
-    <main>
-<div class="timeline-container">
-  <div class="timeline-track" id="timeline-track">
-    <!-- Events will be inserted here by JS -->
-  </div>
-</div>
-
-    </main>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-tab">Home</a>
+        <a href="events.html" class="nav-tab">Events</a>
+        <a href="team.html" class="nav-tab">Team</a>
+        <a href="about.html" class="nav-tab">About</a>
+        <a href="index.html" class="nav-tab logo-tab">
+          <img src="/logo.png" alt="Logo" class="nav-logo-img" />
+        </a>
+      </nav>
+    </div>
+  </header>
+  <div class="timeline-scroll">
+    <div class="timeline-outer" id="timeline-outer">
+      <!-- JS will inject events here -->
+    </div>
   </div>
   <script>
-    const events = [
-      { id: 1, title: "Summer Blitz", date: "18 Apr", description: "Quick matches in the summer heat!", image: "preview1.png" },
-      { id: 2, title: "Hall-wise Battle", date: "5 Mar", description: "Inter-hall arena fight!", image: "preview2.png" },
-      { id: 3, title: "Puzzle Night", date: "22 Feb", description: "Crack problems quickly!", image: "preview3.png" },
-      { id: 4, title: "Rapid Rumble", date: "15 Jan", description: "A rapid tournament", image: "preview4.png" },
-      { id: 5, title: "Opening Workshop", date: "5 Jan", description: "Learn openings!", image: "preview5.png" },
-      { id: 6, title: "Winter Blitz", date: "18 Dec", description: "Cold blitz madness!", image: "preview6.png" },
-      { id: 7, title: "Team Chess", date: "30 Nov", description: "Team-up event.", image: "preview7.png" },
-      { id: 8, title: "Bullet Arena", date: "15 Oct", description: "1-minute games!", image: "preview8.png" },
-      { id: 9, title: "Simul Showdown", date: "10 Sep", description: "1 v Many!", image: "preview9.png" },
-      { id: 10, title: "Blitz Bash", date: "5 Aug", description: "Speedy games!", image: "preview10.png" }
-    ];
-
-    const container = document.getElementById("timeline-track");
-
-    events.forEach((event, index) => {
-      const isOdd = event.id % 2 === 1;
-      const wrapper = document.createElement("div");
-      wrapper.className = `timeline-event ${isOdd ? "downward" : "upward"}`;
-
-      const circle = document.createElement("div");
-      circle.className = "event-circle";
-      const [day, month] = event.date.split(" ");
-      circle.innerHTML = `<div>${day}</div><div style="font-size:12px;">${month}</div>`;
-
-      const box = document.createElement("div");
-      box.className = "event-box";
-      box.innerHTML = `
-        <img src="${event.image}" alt="${event.title}" class="event-image" />
-        <div class="event-title">${event.title}</div>
-        <div class="event-description">${event.description}</div>
-      `;
-
-      wrapper.appendChild(circle);
-      wrapper.appendChild(box);
-
-      if (index !== 0) {
-        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        svg.setAttribute("width", "80");
-        svg.setAttribute("height", "80");
-
-        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        path.setAttribute("stroke", "#00FF00");
-        path.setAttribute("fill", "none");
-        path.setAttribute("stroke-width", "4");
-        path.setAttribute("marker-start", "url(#arrowhead)");
-
-        if (isOdd) {
-          path.setAttribute("d", "M80,80 C20,80 60,0 0,0");
-        } else {
-          path.setAttribute("d", "M80,0 C20,0 60,80 0,80");
-        }
-
-        const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-        const marker = document.createElementNS("http://www.w3.org/2000/svg", "marker");
-        marker.setAttribute("id", "arrowhead");
-        marker.setAttribute("markerWidth", "10");
-        marker.setAttribute("markerHeight", "7");
-        marker.setAttribute("refX", "5");
-        marker.setAttribute("refY", "3.5");
-        marker.setAttribute("orient", "auto");
-        marker.setAttribute("markerUnits", "strokeWidth");
-
-        const arrowPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        arrowPath.setAttribute("d", "M0,0 L0,7 L10,3.5 z");
-        arrowPath.setAttribute("fill", "#00FF00");
-
-        marker.appendChild(arrowPath);
-        defs.appendChild(marker);
-        svg.appendChild(defs);
-        svg.appendChild(path);
-
-        wrapper.appendChild(svg);
-      }
-
-      container.appendChild(wrapper);
+fetch('data.txt')
+  .then(response => response.text())
+  .then(text => {
+    // Parse data.txt: each line is title|date|year|preview
+    const events = text.trim().split('\n').map(line => {
+      const [title, date, year] = line.split('|').map(s => s.trim());
+      return { title, date, year };
     });
+
+    // Sort events by date descending (latest first)
+    function parseEventDate(dateStr, year) {
+      const [day, month] = dateStr.split(' ');
+      return new Date(`${year} ${month} ${day}`);
+    }
+    events.sort((a, b) => parseEventDate(b.date, b.year) - parseEventDate(a.date, a.year));
+
+    const container = document.getElementById('timeline-outer');
+
+    for (let idx = 0; idx < events.length; idx++) {
+      const event = events[idx];
+      const isUp = idx % 2 === 1;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'timeline-event ' + (isUp ? 'up' : 'down');
+
+      // Node (circle)
+      const node = document.createElement('div');
+      node.className = 'timeline-node ' + (isUp ? 'node-up' : 'node-down');
+      const [day, month] = event.date.split(' ');
+      node.innerHTML = `<div style="font-size:0.8rem;">${day}-${month}</div><div style=\"font-size:0.6rem;\">${event.year}</div>`;
+
+      // Vertical connector
+      const connector = document.createElement('div');
+      connector.className = 'vertical-connector' + (isUp ? ' connector-up' : ' connector-down');
+
+      // Event box
+      const box = document.createElement('div');
+      box.className = 'event-box ' + (isUp ? ' event-box-up' : ' event-box-down');
+      // Try both .jpg and .png
+      const [imgDay, imgMonth] = event.date.split(' ');
+      const imgBase = `Event_preview/${imgMonth}${event.year}${imgDay.padStart(2, '0')}`;
+      function setImageIfExists(ext) {
+        return new Promise(resolve => {
+          const img = new window.Image();
+          img.onload = () => resolve(imgBase + ext);
+          img.onerror = () => resolve('');
+          img.src = imgBase + ext;
+        });
+      }
+      Promise.all([setImageIfExists('.jpg'), setImageIfExists('.png')]).then(([jpg, png]) => {
+        const bgImg = jpg || png;
+        if (bgImg) {
+          box.style.backgroundImage = `url('${bgImg}')`;
+          box.style.backgroundSize = 'cover';
+          box.style.backgroundPosition = 'center';
+          box.innerHTML = '';
+        } else {
+          box.innerHTML = `<div class=\"event-title\">${event.title}</div>`;
+        }
+      });
+      // On click, load details from file named like Aug182025.txt
+      box.addEventListener('click', () => {
+        // Format: Aug182025.txt
+        const [day, month] = event.date.split(' ');
+        const fileName = `${month}${event.year}${day.padStart(2, '0')}.txt`;
+        fetch(fileName)
+          .then(resp => resp.ok ? resp.text() : Promise.reject('No details'))
+          .then(data => {
+            alert(data); // You can replace this with a modal or custom display
+          })
+          .catch(() => {
+            alert('No details found for this event.');
+          });
+      });
+
+      // Structure
+      if (isUp) {
+        wrapper.appendChild(node);
+        wrapper.appendChild(connector);
+        wrapper.appendChild(box);
+      } else {
+        wrapper.appendChild(box);
+        wrapper.appendChild(connector);
+        wrapper.appendChild(node);
+      }
+      container.appendChild(wrapper);
+    }
+    // After creating all events, add arrows between them
+    for (let idx = 0; idx < events.length - 1; idx++) {
+      const currentEvent = container.children[idx];
+      const isUp = idx % 2 === 0;
+      const arrow = document.createElement("img");
+      arrow.className = "timeline-arrow-img"+ (isUp ? " arrow-up" : " arrow-down");
+      arrow.src = "/assets/up_arrow.png";
+      arrow.alt = "arrow";
+      if (isUp) {
+        arrow.style.top = "0";
+        arrow.style.left = "calc(100% - 105px)";
+        arrow.style.transform = "translateY(-20%)";
+      } else {
+        arrow.style.left = "calc(100% - 106px)";
+        arrow.style.top = "auto";
+        arrow.style.bottom = "0";
+        arrow.style.transform = "translateY(-52%) scaleY(-1)";
+      }
+      currentEvent.appendChild(arrow);
+    }
+  });
   </script>
 </body>
 </html>
